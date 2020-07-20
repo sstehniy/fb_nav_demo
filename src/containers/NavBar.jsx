@@ -43,7 +43,6 @@ const StyledNavBar = styled.div`
     right: 0;
     bottom: 0;
     z-index: -1;
-
     height: 1px;
     background-color: ${({ theme }) => theme.bg_hover};
   }
@@ -89,7 +88,6 @@ const LeftSection = () => {
 };
 
 const StyledRSection = styled.div`
-  position: relative;
   height: 100%;
   width: 210px;
   display: flex;
@@ -109,7 +107,10 @@ const RightSection = () => {
 
   const setactiveTabNameHandler = (tabName) => {
     if (tabName === activeTabName) setActiveTabName(null);
-    else setActiveTabName(tabName);
+    else {
+      setActiveTabName(null);
+      setImmediate(() => setActiveTabName(tabName));
+    }
   };
   useEffect(() => {
     if (!tabRef.current) return;
@@ -255,6 +256,7 @@ const RightSection = () => {
       {navbtns.map(({ name, icon }, i) => (
         <NavButton
           key={i}
+          name={name}
           icon={icon}
           onClick={() => setactiveTabNameHandler(name)}
           classNames={name === activeTabName ? ['menu-btn-active'] : []}

@@ -5,11 +5,13 @@ export const darkTheme = {
   bg_btn: '#323334',
   bg_btn_active: '#323334',
   stroke: '#B8BBC0',
+  svg_fill: '#D8DADF',
   active_svg_fill: '#1075DD',
   menu_link_svg: '#B1B4B7',
   bgc_toggle: '#4793FB',
   toggle: '#fff',
   back_btn_svg: '#fff',
+  bg_tooltip: '#c8c8c8',
 };
 
 export const lightTheme = {
@@ -19,9 +21,11 @@ export const lightTheme = {
   bg_btn: '#D8DADF',
   bg_btn_active: '#e7f3fe',
   stroke: '#82888F',
+  svg_fill: '#242526',
   active_svg_fill: '#1075DD',
   menu_link_svg: '#5C6269',
   bgc_toggle: '#C3C5C9',
   toggle: '#f2f2f2',
   back_btn_svg: '#1C1D21',
+  bg_tooltip: '#39393a',
 };

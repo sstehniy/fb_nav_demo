@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import Tooltip from '../../components/UI/Tooltip';
 
 const StyledNavButton = styled.div`
   height: 40px;
   width: 40px;
   border-radius: 20px;
   display: flex;
-
   align-items: center;
   justify-content: center;
   background-color: ${({ theme }) => theme.bg_hover};
@@ -18,7 +18,7 @@ const StyledNavButton = styled.div`
   & svg {
     width: 15px;
     height: 15px;
-    fill: ${({ theme }) => theme.stroke};
+    fill: ${({ theme }) => theme.svg_fill};
   }
 
   &:hover {
@@ -47,16 +47,55 @@ const StyledNavButton = styled.div`
   }
 `;
 
-const NavButton = ({ icon, onClick, classNames = [] }) => {
+const NavButton = ({ icon, name, onClick, classNames = [] }) => {
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [leftStyleProp, setLeftStyleProp] = useState(null);
+
+  const btnRef = useRef(null);
+
+  useEffect(() => {
+    if (!btnRef.current) return;
+
+    const resetShowTooltip = () => {
+      setShowTooltip(false);
+      setLeftStyleProp(null);
+    };
+
+    const showTooltipHandler = () => {
+      if (showTooltip) return;
+      setLeftStyleProp(
+        btnRef.current.offsetLeft + btnRef.current.offsetWidth / 2
+      );
+      setShowTooltip(true);
+    };
+
+    btnRef.current.addEventListener('mouseover', showTooltipHandler);
+    btnRef.current.addEventListener('mouseleave', resetShowTooltip);
+    btnRef.current.addEventListener('click', resetShowTooltip);
+
+    return () => {
+      btnRef.current.removeEventListener('mouseover', showTooltipHandler);
+      btnRef.current.removeEventListener('mouseleave', resetShowTooltip);
+      btnRef.current.removeEventListener('click', resetShowTooltip);
+    };
+  }, [btnRef.current]);
+
   return (
-    <StyledNavButton onClick={onClick} className={classNames.join(' ')}>
-      {icon}
-    </StyledNavButton>
+    <>
+      <StyledNavButton
+        onClick={onClick}
+        className={classNames.join(' ')}
+        ref={btnRef}>
+        {icon}
+      </StyledNavButton>
+      {showTooltip && <Tooltip text={name} leftStyleProp={leftStyleProp} />}
+    </>
   );
 };
 
 NavButton.propTypes = {
   icon: PropTypes.element.isRequired,
+  name: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   classNames: PropTypes.arrayOf(PropTypes.string),
 };

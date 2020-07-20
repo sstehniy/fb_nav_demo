@@ -15,11 +15,8 @@ const StyledTabMenu = styled.div`
   padding: 10px 10px;
   top: calc(100% - 5px);
   overflow: hidden;
-  right: 3px;
+  right: 10px;
   color: ${({ theme }) => theme.stroke};
-  /* display: flex;
-  flex-direction: column;
-  align-items: stretch; */
   border-radius: 8px;
   background-color: ${({ theme }) => theme.bg_sub};
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
@@ -105,8 +102,8 @@ const TabMenu = ({ tabs: { name, children = [] } }) => {
 
   useEffect(() => {
     if (!menuRef.current) return;
-    else setMenuHeight(menuRef.current.offsetHeight);
-  }, [menuRef.current]);
+    setMenuHeight(menuRef.current.offsetHeight);
+  }, [name, menuRef.current]);
 
   const setActiveSubMenuHandler = (name) => {
     setActiveSubMenu(name);
@@ -117,7 +114,9 @@ const TabMenu = ({ tabs: { name, children = [] } }) => {
   }, []);
 
   return (
-    <StyledTabMenu ref={menuRef} style={{ height: menuHeight }}>
+    <StyledTabMenu
+      ref={menuRef}
+      style={{ height: menuHeight ? menuHeight : '' }}>
       <SwitchTransition>
         <CSSTransition
           key={activeSubMenu}
